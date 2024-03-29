@@ -67,13 +67,25 @@ app.get('/colors/add/:name', (req, res, next) => {
     // SQL QUERY NEW ROW
     const sqlLast = 'SELECT * FROM colors ORDER BY id DESC LIMIT 1';
 
-    /**
-     * STEP 3 - After INSERT, return the new row
-     *  - insert
-     *  - if error, go to next()
-     *  - if no error, query for new row
-     *  - return new row
-     */
+   
+    //  * STEP 3 - After INSERT, return the new row
+
+    //  *  - insert
+    db.run(sql,params,(err,row)=> {
+        if(err) {
+            next(err);
+        }
+        else{
+            db.get(sqlLast,[],(err,row) => {
+                res.json(row);
+            })
+        }
+    })
+    //  * 
+    //  *  - if error, go to next()
+    //  *  - if no error, query for new row
+    //  *  - return new row
+    
     // Your code here
 })
 
